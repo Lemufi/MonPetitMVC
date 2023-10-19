@@ -15,5 +15,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "*"
+    },
+    "require": {
+        "twig/twig": "v3.4.3"
     }
 }
