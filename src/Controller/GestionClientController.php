@@ -11,16 +11,26 @@ use Tools\MyTwig;
 class GestionClientController{
     public function chercheUn(array $params){
         $modele = new GestionClientModel();
-        $id = filter_var(intval($params["id"]), FILTER_VALIDATE_INT);
-        $unClient = $modele->find($id);
-        if ($unClient){
-            $r = new ReflectionClass($this);
-            $vue = str_replace('Controller', 'View', $r->getShortName()) . "/unClient.html.twig";
-            MyTwig::afficheVue($vue, array('unClient' => $unClient));
+        // on récupère tous les id des clients
+        $ids = $modele->findIds();
+        // on place les ids trouvés dans le tableau de paramètres à envoyer à la vue
+        $params['lesId'] = $ids;
+        // on teste si l'id du client à chercher à été passé dans l'URL
+        if (array_key_exists('id', $params)) {
+            $id = filter_var(intval($params["id"]), FILTER_VALIDATE_INT);
+            $unClient = $modele->find($id);
+            if ($unClient){
+                // le client a été trouvé
+                $params['unClient'] = $unClient;
+            }
+            else {
+                // le client a été cherché mais pas trouvé
+                $params['message'] = "Client " . $id . " inconnu";
+            }
         }
-        else {
-            throw new AppException("Client " . $id . " inconnu");
-        }
+        $r = new ReflectionClass($this);
+        $vue = str_replace('Controller', 'View', $r->getShortName()) . "/unClient.html.twig";
+        MyTwig::afficheVue($vue, $params);
     }
     
     public function cherchetous(){

@@ -52,5 +52,23 @@ class GestionClientModel {
             throw new AppException("Erreur technique inattendue");
         }
     }
+    
+    public function findIds(){
+        try {
+            $unObjetPdo = Connexion::getConnexion();
+            $sql = "select id from CLIENT";
+            $lignes = $unObjetPdo->query($sql);
+            // on va configurer le mode objet pour la lisibilité du code
+            if ($lignes->rowCount() > 0) {
+                // $lignes->setFetchMode();
+                $t = $lignes->fetchAll()(PDO::FETCH_ASSOC);
+                return $t;
+            } else {
+                throw new AppException('Aucun client trouvé');
+            }
+        } catch (PDOException) {
+            throw new AppException("Erreur technique inattendue");
+        }
+    }
 
 }
