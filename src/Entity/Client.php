@@ -18,8 +18,8 @@ class Client {
 
      public function __construct($params = null) {
         if (!is_null($params)) {
-            foreach ($params as $cle => $valeur) {                                 
-                $this->$cle = $valeur;             
+            foreach ($params as $cle => $valeur) {
+                $this->$cle = $valeur;
             }
         }
     }

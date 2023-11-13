@@ -14,9 +14,9 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "=9.5"
     },
     "require": {
-        "twig/twig": "v3.4.3"
+        "twig/twig": "v3.7.1"
     }
 }

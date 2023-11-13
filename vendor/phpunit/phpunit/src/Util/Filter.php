@@ -15,9 +15,8 @@ use function in_array;
 use function is_file;
 use function realpath;
 use function sprintf;
-use function str_starts_with;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\PhptAssertionFailedError;
+use PHPUnit\Framework\SyntheticError;
 use Throwable;
 
 /**
@@ -32,10 +31,10 @@ final class Filter
     {
         $filteredStacktrace = '';
 
-        if ($t instanceof PhptAssertionFailedError) {
-            $eTrace = $t->syntheticTrace();
-            $eFile  = $t->syntheticFile();
-            $eLine  = $t->syntheticLine();
+        if ($t instanceof SyntheticError) {
+            $eTrace = $t->getSyntheticTrace();
+            $eFile  = $t->getSyntheticFile();
+            $eLine  = $t->getSyntheticLine();
         } elseif ($t instanceof Exception) {
             $eTrace = $t->getSerializableTrace();
             $eFile  = $t->getFile();
@@ -53,11 +52,11 @@ final class Filter
         if (!self::frameExists($eTrace, $eFile, $eLine)) {
             array_unshift(
                 $eTrace,
-                ['file' => $eFile, 'line' => $eLine],
+                ['file' => $eFile, 'line' => $eLine]
             );
         }
 
-        $prefix      = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
+        $prefix      = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : null;
         $excludeList = new ExcludeList;
 
         foreach ($eTrace as $frame) {
@@ -65,7 +64,7 @@ final class Filter
                 $filteredStacktrace .= sprintf(
                     "%s:%s\n",
                     $frame['file'],
-                    $frame['line'] ?? '?',
+                    $frame['line'] ?? '?'
                 );
             }
         }
@@ -73,26 +72,28 @@ final class Filter
         return $filteredStacktrace;
     }
 
-    private static function shouldPrintFrame(array $frame, false|string $prefix, ExcludeList $excludeList): bool
+    private static function shouldPrintFrame(array $frame, ?string $prefix, ExcludeList $excludeList): bool
     {
         if (!isset($frame['file'])) {
             return false;
         }
 
-        $file              = $frame['file'];
-        $fileIsNotPrefixed = $prefix === false || !str_starts_with($file, $prefix);
-
         // @see https://github.com/sebastianbergmann/phpunit/issues/4033
+        $script = '';
+
         if (isset($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
             $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
-        } else {
-            $script = '';
         }
 
-        return is_file($file) &&
+        $file = $frame['file'];
+
+        if ($file === $script) {
+            return false;
+        }
+
+        return $prefix === null &&
                self::fileIsExcluded($file, $excludeList) &&
-               $fileIsNotPrefixed &&
-               $file !== $script;
+               is_file($file);
     }
 
     private static function fileIsExcluded(string $file, ExcludeList $excludeList): bool

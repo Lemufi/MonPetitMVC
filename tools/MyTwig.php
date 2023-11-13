@@ -10,7 +10,7 @@ abstract class MyTwig{
             'debug' => true,
         ]);
         $environmentTwig->addExtension(new \Twig\Extension\DebugExtension());
-        return $EnvironmentTwig;
+        return $environmentTwig;
     }
     
     

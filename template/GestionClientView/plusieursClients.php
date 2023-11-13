@@ -1,5 +1,5 @@
 <?php
-include_once PATH_VIEWg . "header.html";
+include_once PATH_VIEW . "header.html";
 echo "<p>Nombre de clients trouvés : ".count($clients) ."</p>";
 
 foreach ($clients as $client){
