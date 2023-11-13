@@ -62,7 +62,7 @@ class Client {
     }
 
     public function __toString(): string {
-        return "Le client dont le numéro est égal à " . $this->noCli . " s'appelle " . $this->titreCli . " " . $this->nomCli . " " . $this->prenomCli . "<br>";
+        return "Le client dont le numéro est égal à " . $this->id . " s'appelle " . $this->titreCli . " " . $this->nomCli . " " . $this->prenomCli . "<br>";
     }
 
     public function setAdresseRue1Cli(string $adresseRue1Cli): void {

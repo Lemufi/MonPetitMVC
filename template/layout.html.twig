@@ -5,8 +5,10 @@
     </head>
     <body>
         {% block navbar %}{% include 'navbar.html.twig' %}{% endblock %}
+        <div class="container">
         {% block contenu %}{% endblock %}
-    </body>
+        </div>
+        </body>
     <footer>
         {% block footer %}{% include 'footer.html.twig' %}{% endblock %}
     </footer>

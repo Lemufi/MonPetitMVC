@@ -61,7 +61,7 @@ class GestionClientModel {
             // on va configurer le mode objet pour la lisibilité du code
             if ($lignes->rowCount() > 0) {
                 // $lignes->setFetchMode();
-                $t = $lignes->fetchAll()(PDO::FETCH_ASSOC);
+                $t = $lignes->fetchAll(PDO::FETCH_ASSOC);
                 return $t;
             } else {
                 throw new AppException('Aucun client trouvé');
