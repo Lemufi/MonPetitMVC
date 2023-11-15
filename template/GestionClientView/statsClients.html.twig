@@ -1,0 +1,25 @@
+{%  extends "layout.html.twig" %}
+{% block contenu %}
+    <table>
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Nom</td>
+                <td>Prenom</td>
+                <td>Ville</td>
+                <td>Nombre Commandes</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in desClients %}
+                <tr>
+                    <th>{{ client.id }}</th>
+                    <th>{{ client.nomCli }}</th>
+                    <th>{{ client.prenomCli }}</th>
+                    <th>{{ client.villeCli }}</th>
+                    <th>{{ client.villeCli }}</th>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    {% endblock %}

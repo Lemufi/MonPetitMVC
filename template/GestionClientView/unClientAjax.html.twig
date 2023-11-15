@@ -1,0 +1,18 @@
+{% extends "layout.html.twig" %}
+{% block contenu %}
+    <div class="container">
+        {% block recherche %}
+            {{ include('/blocks/clientRecherche.html.twig') }}
+        {% endblock %}
+    </div>
+    
+    <div id="retour">
+        {% block retour %}
+        {% endblock %}
+    </div>
+{% endblock %}
+{% block footer %}
+    {{ parent() }}
+    <script type="text/javascript" src="assets/js/GestionClient/clientFunction.js"></script>
+    <script type="text/javascript" src="assets/js/creationXHR.js"></script>
+{% endblock %}

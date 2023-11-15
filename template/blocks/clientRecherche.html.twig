@@ -1,0 +1,13 @@
+{# empty Twig template #}
+
+{% block recherche %}
+    <h3>recherche</h3>
+    <div class="form-group">
+        <label for="pk">Id du client</label>
+        <select class="form-control" id="pk" name="id">
+            {% for id in lesId %}
+                <option> {{ id['id'] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{% endblock %}
